@@ -165,7 +165,7 @@ func (m *Map) Php(depth int) string {
         if isArr {
             buf.WriteString(k.Value)
         } else {
-            buf.WriteString(formatter.FmtPhpString(k.Value))
+            buf.WriteString(formatter.FmtPhpKey(k.Value))
         }
         buf.WriteString(" => ")
         switch v.Type {

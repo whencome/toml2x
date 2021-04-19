@@ -3,6 +3,7 @@ package formatter
 import (
     "bytes"
     "encoding/json"
+    "github.com/whencome/toml2x/util"
     "strings"
 )
 
@@ -42,6 +43,13 @@ func FmtPhpString(str string) string {
     }
     buffer.WriteRune('\'')
     return buffer.String()
+}
+
+func FmtPhpKey(k string) string {
+    if util.IsPositiveIntNumeric(k) {
+        return k
+    }
+    return FmtPhpString(k)
 }
 
 func FmtJsonString(v interface{}) string {
