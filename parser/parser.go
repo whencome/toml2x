@@ -6,8 +6,8 @@ import (
     "strconv"
     "strings"
 
-    "toml2x/util"
-    "toml2x/xtype"
+    "github.com/whencome/toml2x/util"
+    "github.com/whencome/toml2x/xtype"
 )
 
 // 解析toml内容

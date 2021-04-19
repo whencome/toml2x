@@ -5,8 +5,8 @@ import (
     "os"
     "testing"
 
-    "toml2x/formatter"
-    "toml2x/parser"
+    "github.com/whencome/toml2x/formatter"
+    "github.com/whencome/toml2x/parser"
 )
 
 func TestParseSingle(t *testing.T) {

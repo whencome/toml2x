@@ -4,8 +4,8 @@ import (
     "bytes"
     "strings"
 
-    "toml2x/formatter"
-    "toml2x/util"
+    "github.com/whencome/toml2x/formatter"
+    "github.com/whencome/toml2x/util"
 )
 
 // 将对象转换为字符串

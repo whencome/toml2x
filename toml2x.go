@@ -1,9 +1,9 @@
 package toml2x
 
 import (
-    "toml2x/formatter"
-    "toml2x/parser"
-    "toml2x/xtype"
+    "github.com/whencome/toml2x/formatter"
+    "github.com/whencome/toml2x/parser"
+    "github.com/whencome/toml2x/xtype"
 )
 
 // parse 解析toml配置内容

@@ -6,7 +6,7 @@ package xtype
 import (
     "sort"
 
-    "toml2x/util"
+    "github.com/whencome/toml2x/util"
 )
 
 // define common data type
