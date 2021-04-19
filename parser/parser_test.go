@@ -5,7 +5,7 @@ import (
     "os"
     "testing"
 
-    "toml2x/formatter"
+    "github.com/whencome/toml2x/formatter"
 )
 
 func TestNormalize(t *testing.T) {
