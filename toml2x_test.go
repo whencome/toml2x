@@ -90,19 +90,11 @@ func TestParseTable(t *testing.T) {
     }
 
     toml := string(tomlBytes)
-    toml, err = formatter.Normalize(toml)
+    rs, err := Xml("table", toml)
     if err != nil {
         t.Log("Normalize content failed\n")
         t.Fail()
     }
 
-    rs, err := parser.ParseTable(toml)
-    if err != nil {
-        t.Logf("parse table failed: %s\n", err)
-        t.Fail()
-    }
-
-    t.Logf("\n=======================\n")
-
-    t.Logf("%+v\n", rs.Php())
+    t.Logf("%+v\n", rs)
 }
