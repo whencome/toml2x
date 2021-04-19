@@ -28,8 +28,7 @@ func Json(dataType string, toml string) (string, error) {
     if err != nil {
         return "", err
     }
-    s := obj.Json()
-    return formatter.FmtString(s), nil
+    return obj.Json(), nil
 }
 
 // xml 转换为xml格式
@@ -40,8 +39,7 @@ func Xml(dataType string, toml string) (string, error) {
     if err != nil {
         return "", err
     }
-    s := obj.Xml()
-    return formatter.FmtString(s), nil
+    return obj.Xml(), nil
 }
 
 // xml 转换为php格式
