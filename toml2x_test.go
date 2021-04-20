@@ -29,7 +29,7 @@ func TestParseSingle(t *testing.T) {
             t.Fail()
             continue
         }
-        t.Logf("parse %s success: %+v\n\n", toml, rs.Json())
+        t.Logf("parse %s success: %+v\n\n", toml, rs.Json(true))
     }
 }
 
@@ -40,7 +40,7 @@ func TestParseArray(t *testing.T) {
         t.Logf("TestParseArray failed: %s \n", err)
         t.Fail()
     }
-    t.Logf("parsed: %+v\n", parsed.Json())
+    t.Logf("parsed: %+v\n", parsed.Json(true))
 }
 
 func TestParseInlineTable(t *testing.T) {
@@ -56,7 +56,7 @@ func TestParseInlineTable(t *testing.T) {
         t.Fail()
         return
     }
-    t.Logf("parsed: %+v\n", parsed.Json())
+    t.Logf("parsed: %+v\n", parsed.Json(true))
 }
 
 func TestParseSimple(t *testing.T) {
@@ -71,7 +71,7 @@ bare-key = "value"
         t.Fail()
         return
     }
-    t.Logf("parsed: %+v\n", parsed.Json())
+    t.Logf("parsed: %+v\n", parsed.Json(true))
 }
 
 func TestParseTable(t *testing.T) {

@@ -28,7 +28,7 @@ func Json(dataType string, toml string) (string, error) {
     if err != nil {
         return "", err
     }
-    return obj.Json(), nil
+    return obj.Json(true), nil
 }
 
 // xml 转换为xml格式

@@ -9,7 +9,7 @@ import (
 )
 
 // 将对象转换为字符串
-func (o *Object) Json() string {
+func (o *Object) Json(scalar bool) string {
     if o == nil {
         return "null"
     }
@@ -23,6 +23,9 @@ func (o *Object) Json() string {
         }
         return v
     case TypeString:
+        if scalar {
+            return util.String(o.Value)
+        }
         return formatter.FmtJsonString(util.String(o.Value))
     case TypeMap:
         return o.Value.(*Map).Json()
@@ -90,7 +93,7 @@ func (m *Map) jsonArray() string {
             buf.WriteString(",")
         }
         v := m.Data[k]
-        buf.WriteString(v.Json())
+        buf.WriteString(v.Json(false))
     }
     buf.WriteString("]")
     return buf.String()
@@ -106,7 +109,7 @@ func (m *Map) jsonObject() string {
         v := m.Data[k]
         buf.WriteString(formatter.FmtJsonKey(k.Value))
         buf.WriteString(":")
-        buf.WriteString(v.Json())
+        buf.WriteString(v.Json(false))
     }
     buf.WriteString("}")
     return buf.String()
