@@ -2,22 +2,9 @@ package formatter
 
 import (
     "errors"
+    "github.com/whencome/toml2x/util"
     "strings"
 )
-
-// runeInArray 判断给定的rune是否在数组中
-func runeInArray(r rune, arr []rune) bool {
-    size := len(arr)
-    if size == 0 {
-        return false
-    }
-    for i := 0; i < size; i++ {
-        if r == arr[i] {
-            return true
-        }
-    }
-    return false
-}
 
 // Normalize 对输入的配置进行标准化处理，以便于后续解析
 func Normalize(snippet string) (string, error) {
@@ -82,7 +69,7 @@ func Normalize(snippet string) (string, error) {
             } else if !openMLString {
                 openLString = !openLString
             }
-        } else if chars[i] == '\\' && chars[i-1] != '\\' && !runeInArray(chars[i+1], []rune{'b', 't', 'n', 'f', 'r', 'u', 'U', '"', '\\', ' '}) {
+        } else if chars[i] == '\\' && chars[i-1] != '\\' && !util.RuneInArray(chars[i+1], []rune{'b', 't', 'n', 'f', 'r', 'u', 'U', '"', '\\', ' '}) {
             if openString {
                 return "", errors.New("Reserved special characters inside strings are not allowed: " + string(chars[i]) + string(chars[i+1]))
             }

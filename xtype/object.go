@@ -5,6 +5,7 @@ package xtype
 
 import (
     "sort"
+    "strconv"
 
     "github.com/whencome/toml2x/util"
 )
@@ -230,4 +231,132 @@ func (m *Map) IsArray() bool {
         }
     }
     return true
+}
+
+// GetParentIndexedKeys 获取带索引的键列表
+func (m *Map) GetParentIndexedKeys(keys []string) []string {
+    size := len(keys)
+    if size <= 0 {
+        return keys
+    }
+    dst := m
+    dstKeys := make([]string, 0)
+    for i, key := range keys {
+        dstKeys = append(dstKeys, key)
+        k := dst.GetKey(key)
+        if dst.Data[k] == nil || dst.Data[k].Type != TypeMap {
+            break
+        }
+        if i == size - 1 {
+            break
+        }
+        // 找上级路径是否是数组
+        if kv, ok := dst.Data[k]; ok && kv.Type == TypeMap {
+            // key已经存在，且是一个map，继续寻找下级
+            dst = dst.Data[k].Value.(*Map)
+            // 计算索引
+            j := 0
+            lastIdx := -1
+            var lastK *Key
+            for {
+                found := false
+                for _, ek := range dst.Keys {
+                    if ek.Value == strconv.Itoa(j) {
+                        lastIdx = j
+                        lastK = ek
+                        j++
+                        found = true
+                        break
+                    }
+                }
+                if !found {
+                    break
+                }
+            }
+            if lastIdx >= 0 {
+                if dst.Data[lastK].Type == TypeMap {
+                    dstKeys = append(dstKeys, strconv.Itoa(lastIdx))
+                    dst = dst.Data[lastK].Value.(*Map)
+                }
+            }
+        } else {
+            break
+        }
+    }
+    return dstKeys
+}
+
+// GetCurIndexedKeys 获取当前带索引的键列表
+func (m *Map) GetRecursiveIndexedKeys(keys []string) []string {
+    size := len(keys)
+    if size <= 0 {
+        return keys
+    }
+    idx := 0
+    dst := m
+    dstKeys := make([]string, 0)
+    for i, key := range keys {
+        dstKeys = append(dstKeys, key)
+        k := dst.GetKey(key)
+        if dst.Data[k] == nil || dst.Data[k].Type != TypeMap {
+            idx = 0
+            break
+        }
+        if i == size - 1 {
+            fData := dst.Data[k].Value.(*Map)
+            // 计算索引
+            j := 0
+            for {
+                found := false
+                for _, ek := range fData.Keys {
+                    if ek.Value == strconv.Itoa(j) {
+                        j++
+                        found = true
+                        break
+                    }
+                }
+                if !found {
+                    break
+                }
+            }
+            idx = j
+            break
+        }
+        // 找上级路径是否是数组
+        if kv, ok := dst.Data[k]; ok && kv.Type == TypeMap {
+            // key已经存在，且是一个map，继续寻找下级
+            dst = dst.Data[k].Value.(*Map)
+            // 计算索引
+            j := 0
+            lastIdx := -1
+            var lastK *Key
+            for {
+                found := false
+                for _, ek := range dst.Keys {
+                    if ek.Value == strconv.Itoa(j) {
+                        lastIdx = j
+                        lastK = ek
+                        j++
+                        found = true
+                        break
+                    }
+                }
+                if !found {
+                    break
+                }
+            }
+            if lastIdx >= 0 {
+                if dst.Data[lastK].Type == TypeMap {
+                    dstKeys = append(dstKeys, strconv.Itoa(lastIdx))
+                    dst = dst.Data[lastK].Value.(*Map)
+                }
+            }
+        } else {
+            break
+        }
+    }
+    if idx >= 0 {
+        dstKeys = append(dstKeys, strconv.Itoa(idx))
+    }
+    return dstKeys
 }

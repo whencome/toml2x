@@ -90,7 +90,7 @@ func TestParseTable(t *testing.T) {
     }
 
     toml := string(tomlBytes)
-    rs, err := Json("table", toml)
+    rs, err := Php("table", toml)
     if err != nil {
         t.Log("Normalize content failed\n")
         t.Fail()

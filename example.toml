@@ -255,6 +255,7 @@ color = "gray"
 [[fruit]]
   name = "apple"
 
+#  physical = {color = "red", shape = "round"}
   [fruit.physical]
     color = "red"
     shape = "round"

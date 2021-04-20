@@ -43,16 +43,18 @@ func ParseTable(toml string) (*xtype.Object, error) {
             if len(aTables) <= 0 {
                 continue
             }
-            recurseKeys = make([]string, len(aTables))
-            copy(recurseKeys, aTables)
+            // recurseKeys = make([]string, len(aTables))
+            // copy(recurseKeys, aTables)
+            recurseKeys = arr.GetRecursiveIndexedKeys(aTables)
         } else if string(line[0:1]) == "[" && string(line[lineSize-1:]) == "]" {
             tableName := line[1:lineSize-1]
             aTables := parseTomlTableName(tableName)
             if len(aTables) <= 0 {
                 continue
             }
-            recurseKeys = make([]string, len(aTables))
-            copy(recurseKeys, aTables)
+            // recurseKeys = make([]string, len(aTables))
+            // copy(recurseKeys, aTables)
+            recurseKeys = arr.GetParentIndexedKeys(aTables)
         } else if util.RunesContains(line, '=') {
             rawLine := string(line)
             pos := strings.Index(rawLine, "=")
@@ -108,7 +110,6 @@ func ParseTable(toml string) (*xtype.Object, error) {
             if err != nil {
                 return nil, err
             }
-            // arr.DeepAdd(pathKeys, obj)
         } else if string(line[0:1]) == "[" && string(line[lineSize-1:]) != "]" {
             return nil, errors.New("Key groups have to be on a line by themselves: " + string(line))
         } else {
@@ -354,6 +355,7 @@ func parseKeyValue(arr *xtype.Map, keys []string, val string) error {
     arr.DeepAdd(keys, obj)
     return nil
 }
+
 
 
 
