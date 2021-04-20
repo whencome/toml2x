@@ -94,6 +94,10 @@ func FmtPhpKey(k string) string {
     return FmtPhpString(k)
 }
 
+func FmtJsonKey(k string) string {
+    return FmtString(k)
+}
+
 func FmtJsonString(v interface{}) string {
     fmtRs, err := json.Marshal(v)
     if err != nil {

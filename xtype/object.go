@@ -157,7 +157,11 @@ func (m *Map) DeepAdd(fields []string, obj *Object) {
     for i, field := range fields {
         k := dst.GetKey(field)
         if k == nil {
-            k = NewStringKey(field)
+            if util.IsPositiveIntNumeric(field) {
+                k = NewNumberKey(field)
+            } else {
+                k = NewStringKey(field)
+            }
             dst.Keys = append(dst.Keys, k)
         }
         if dst.Data == nil {

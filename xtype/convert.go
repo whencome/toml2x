@@ -104,7 +104,7 @@ func (m *Map) jsonObject() string {
             buf.WriteString(",")
         }
         v := m.Data[k]
-        buf.WriteString(k.String())
+        buf.WriteString(formatter.FmtJsonKey(k.Value))
         buf.WriteString(":")
         buf.WriteString(v.Json())
     }
