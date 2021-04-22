@@ -74,6 +74,27 @@ bare-key = "value"
     t.Logf("parsed: %+v\n", parsed.Json(true))
 }
 
+func TestParseSimpleTable(t *testing.T) {
+    tomlTable := `# 模式，debug or release
+mode = "debug"
+# http端口
+port = 8808
+# 跨域访问设置
+[site.cors]
+# 是否允许跨域(为true时全局启用，为false时只启用IP白名单)
+is_enabled = false
+# IP白名单(is_enabled=false时启用)
+ip_whitelist = ["1.2.3.4"]`
+    tomlTable, _ = formatter.Normalize(tomlTable)
+    parsed, err := parser.ParseTable(tomlTable)
+    if err != nil {
+        t.Logf("TestParseSimple failed: %s \n", err)
+        t.Fail()
+        return
+    }
+    t.Logf("parsed: %+v\n", parsed.Json(true))
+}
+
 func TestParseTable(t *testing.T) {
     tomlFile := "example.toml"
     file, err := os.Open(tomlFile)

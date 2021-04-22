@@ -233,7 +233,7 @@ func (m *Map) IsArray() bool {
     return true
 }
 
-// GetParentIndexedKeys 获取带索引的键列表
+// GetParentIndexedKeys 获取带索引的键列表,只寻找父级最后的索引，最后的key不添加下标
 func (m *Map) GetParentIndexedKeys(keys []string) []string {
     size := len(keys)
     if size <= 0 {
@@ -245,10 +245,10 @@ func (m *Map) GetParentIndexedKeys(keys []string) []string {
         dstKeys = append(dstKeys, key)
         k := dst.GetKey(key)
         if dst.Data[k] == nil || dst.Data[k].Type != TypeMap {
-            break
-        }
-        if i == size - 1 {
-            break
+            if i == size - 1 {
+                break
+            }
+            continue
         }
         // 找上级路径是否是数组
         if kv, ok := dst.Data[k]; ok && kv.Type == TypeMap {
@@ -286,7 +286,7 @@ func (m *Map) GetParentIndexedKeys(keys []string) []string {
     return dstKeys
 }
 
-// GetCurIndexedKeys 获取当前带索引的键列表
+// GetCurIndexedKeys 获取当前带索引的键列表，寻找父级最后的索引，且最后的key自动添加下标（索引）
 func (m *Map) GetRecursiveIndexedKeys(keys []string) []string {
     size := len(keys)
     if size <= 0 {
@@ -300,7 +300,10 @@ func (m *Map) GetRecursiveIndexedKeys(keys []string) []string {
         k := dst.GetKey(key)
         if dst.Data[k] == nil || dst.Data[k].Type != TypeMap {
             idx = 0
-            break
+            if i == size - 1 {
+                break
+            }
+            continue
         }
         if i == size - 1 {
             fData := dst.Data[k].Value.(*Map)
