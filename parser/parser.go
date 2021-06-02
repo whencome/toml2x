@@ -43,8 +43,6 @@ func ParseTable(toml string) (*xtype.Object, error) {
             if len(aTables) <= 0 {
                 continue
             }
-            // recurseKeys = make([]string, len(aTables))
-            // copy(recurseKeys, aTables)
             recurseKeys = arr.GetRecursiveIndexedKeys(aTables)
         } else if string(line[0:1]) == "[" && string(line[lineSize-1:]) == "]" {
             tableName := line[1:lineSize-1]
@@ -52,9 +50,8 @@ func ParseTable(toml string) (*xtype.Object, error) {
             if len(aTables) <= 0 {
                 continue
             }
-            // recurseKeys = make([]string, len(aTables))
-            // copy(recurseKeys, aTables)
-            recurseKeys = arr.GetParentIndexedKeys(aTables)
+            recurseKeys = make([]string, len(aTables))
+            copy(recurseKeys, aTables)
         } else if util.RunesContains(line, '=') {
             rawLine := string(line)
             pos := strings.Index(rawLine, "=")
