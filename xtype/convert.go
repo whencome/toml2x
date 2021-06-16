@@ -173,7 +173,8 @@ func (m *Map) Php(depth int) string {
 		buf.WriteString(" => ")
 		switch v.Type {
 		case TypeBoolean:
-			fallthrough
+			buf.WriteString(util.String(v.Value))
+			buf.WriteString(",\n")
 		case TypeString:
 			buf.WriteString(formatter.FmtPhpString(util.String(v.Value)))
 			buf.WriteString(",\n")
