@@ -21,6 +21,8 @@ func TestParseSingle(t *testing.T) {
 		// string
 		`"good"`,
 		`"hello,world"`,
+		`'{"payment_delegate":{"merchant_id":"2","merchant_no":"123456","plan_id":"53206"}}'`,
+		`"{\"payment_delegate\":{\"merchant_id\":\"2\",\"merchant_no\":\"123456\",\"plan_id\":\"53206\"}}"`,
 	}
 	for _, toml := range tomls {
 		rs, err := parser.ParseSingle(toml)
@@ -84,7 +86,10 @@ port = 8808
 # 是否允许跨域(为true时全局启用，为false时只启用IP白名单)
 is_enabled = false
 # IP白名单(is_enabled=false时启用)
-ip_whitelist = ["1.2.3.4"]`
+ip_whitelist = ["1.2.3.4"]
+# 测试json内容
+ext_single_json = '{"payment_delegate":{"merchant_id":"2","merchant_no":"123456","plan_id":"53206"}}'
+ext_double_json = "{\"payment_delegate\":{\"merchant_id\":\"2\",\"merchant_no\":\"123456\",\"plan_id\":\"53206\"}}"`
 	tomlTable, _ = formatter.Normalize(tomlTable)
 	parsed, err := parser.ParseTable(tomlTable)
 	if err != nil {
@@ -92,11 +97,11 @@ ip_whitelist = ["1.2.3.4"]`
 		t.Fail()
 		return
 	}
-	t.Logf("parsed: %+v\n", parsed.Json(true))
+	t.Logf("parsed: %+v\n", parsed.Xml())
 }
 
 func TestParseTable(t *testing.T) {
-	tomlFile := "example.toml"
+	tomlFile := "example_2.toml"
 	file, err := os.Open(tomlFile)
 	if err != nil {
 		t.Logf("open file %s failed \n", tomlFile)

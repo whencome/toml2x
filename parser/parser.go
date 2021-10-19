@@ -90,7 +90,8 @@ func ParseTable(toml string) (*xtype.Object, error) {
 				valChars := []rune(val)
 				valCharsSize := len(valChars)
 				for j := 0; j < valCharsSize; j++ {
-					if util.RuneInArray(valChars[j], []rune{'\\', '"'}) {
+					// 单引号里面的内容，不对双引号再进行转义
+					if util.RuneInArray(valChars[j], []rune{'\\'}) {
 						buf.WriteRune('\\')
 						buf.WriteRune(valChars[j])
 					} else {
