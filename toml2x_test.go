@@ -35,6 +35,33 @@ func TestParseSingle(t *testing.T) {
 	}
 }
 
+func TestParseJsonSingle(t *testing.T) {
+	var tomls = []string{
+		// number
+		`123554`,
+		`23.4056`,
+		`0.2399`,
+		// boolean
+		`true`,
+		`false`,
+		// string
+		`"good"`,
+		`"hello,world"`,
+		`"https://www.baidu.com/"`,
+		`'{"payment_delegate":{"merchant_id":"2","merchant_no":"123456","plan_id":"53206"}}'`,
+		`"{\"payment_delegate\":{\"merchant_id\":\"2\",\"merchant_no\":\"123456\",\"plan_id\":\"53206\"}}"`,
+	}
+	for _, toml := range tomls {
+		rs, err := Json("single", toml)
+		if err != nil {
+			t.Logf("parse %s failed: %s\n", toml, err)
+			t.Fail()
+			continue
+		}
+		t.Logf("parse %s success: %+v\n\n", toml, rs)
+	}
+}
+
 func TestParseArray(t *testing.T) {
 	tomlArr := `[ 'literal,', 'strings', 'quo"ted' ]`
 	parsed, err := parser.ParseSingle(tomlArr)
